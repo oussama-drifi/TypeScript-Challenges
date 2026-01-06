@@ -2,19 +2,30 @@ type Login = { type: "USER_LOGIN"; payload: [userId: number, timestamp: number] 
 type Logout = { type: "USER_LOGOUT"; payload: [userId: number] };
 type Error = { type: "ERROR"; payload: [message: string, code?: number] };
 
-type Event = Login | Logout | Error;
+// type Event = Login | Logout | Error;
+type Event = { type: "USER_LOGIN"; payload: [userId: number, timestamp: number] } 
+| { type: "USER_LOGOUT"; payload: [userId: number] } 
+| { type: "ERROR"; payload: [message: string, code?: number] }
 
-function emit (event: Event) {
+// function createEvent(
+//     type: "USER_LOGIN",
+//     payload: [number, number]
+// ): { type: "USER_LOGIN"; payload: [number, number] }
 
-    switch (event.type) {
-        case "USER_LOGIN":
-            
-        case "USER_LOGOUT":
-        case "ERROR":
-    }
-}
+// function createEvent(
+//     type: "USER_LOGOUT",
+//     payload: [number]
+// ): { type: "USER_LOGOUT"; payload: [number] }
 
-const createEvent = (type: string, 
-                        payload: [userId: number, timestamp?: number] | 
-                                    [message: string, code?: number]
-                        ) => {}
+// function createEvent(
+//     type: "ERROR",
+//     payload: [string, number?]
+// ): { type: "ERROR"; payload: [string, number?] }
+
+// // Implementation signature
+// function createEvent(
+//     type: Event["type"],
+//     payload: Event["payload"]
+// ): Event {
+//     return  { type, payload }
+// }
