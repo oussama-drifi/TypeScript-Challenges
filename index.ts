@@ -4,6 +4,8 @@ type Error = { type: "ERROR"; payload: [message: string, code?: number] };
 
 type Event = Login | Logout | Error;
 
+
+
 // function createEvent(
 //     type: "USER_LOGIN",
 //     payload: [number, number]
