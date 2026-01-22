@@ -29,18 +29,14 @@ type Event = Login | Logout | Error;
 //     return  { type, payload }
 // }
 
+class Singleton {
+    static instance:Singleton
+    private constructor (){}
 
-type Drivable = {
-    drive(speed: number): void
-    stop(): void
-}
-
-
-abstract class Vehicle implements Drivable {
-    drive(speed: number): void {
-        console.log("driving with speed "+speed+"Km/h")
-    }
-    stop(): void {
-        console.log("stoped Vehicle")
+    public static getInstance() {
+        if (!Singleton.instance) {
+            Singleton.instance = new Singleton()
+        }
+        return Singleton.instance
     }
 }
