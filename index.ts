@@ -28,3 +28,19 @@ type Event = Login | Logout | Error;
 // ): Event {
 //     return  { type, payload }
 // }
+
+
+type Drivable = {
+    drive(speed: number): void
+    stop(): void
+}
+
+
+abstract class Vehicle implements Drivable {
+    drive(speed: number): void {
+        console.log("driving with speed "+speed+"Km/h")
+    }
+    stop(): void {
+        console.log("stoped Vehicle")
+    }
+}
