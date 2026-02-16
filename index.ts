@@ -40,3 +40,10 @@ class Singleton {
         return Singleton.instance
     }
 }
+
+
+abstract class Drivable {
+    abstract stop(): void;
+    abstract drive(): void;
+}
+
