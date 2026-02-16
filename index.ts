@@ -47,3 +47,12 @@ abstract class Drivable {
     abstract drive(): void;
 }
 
+type DrivableType = {
+    stop(): void;
+    drive(): void;
+}
+
+interface DrivableInterface {
+    stop(): void;
+    drive(): void;
+}
