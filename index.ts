@@ -30,7 +30,18 @@ type DrivableType = {
 
 interface DrivableInterface {
     stop(): void;
-    drive(): void;
+    drive(speed: number): void;
 }
 
 type UserID = `UIDX-${number}`;
+
+
+
+class Car implements DrivableInterface {
+    stop(): void {
+        console.log("car stoped");
+    }
+    drive(speed: number): void {
+        console.log(`driving car with ${speed} Km/h`);
+    }
+}
