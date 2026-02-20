@@ -25,7 +25,7 @@ abstract class Drivable {
 
 type DrivableType = {
     stop(): void;
-    drive(): void;
+    drive(speed: number): void;
 }
 
 interface DrivableInterface {
@@ -45,3 +45,13 @@ class Car implements DrivableInterface {
         console.log(`driving car with ${speed} Km/h`);
     }
 }
+
+class MotoCycle implements DrivableType {
+    stop(): void {
+        console.log("moto stoped");
+    }
+    drive(speed: number): void {
+        console.log(`driving moto with ${speed} Km/h`);
+    }
+}
+
