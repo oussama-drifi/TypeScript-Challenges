@@ -1,3 +1,8 @@
+// ================= Observer Pattern ======================
+// there are 2 components in this pattern: Subject & Observer
+// the Subject is broadcasting (publisher)
+// the observer is listening (subscriber)
+
 interface Subject {
     registerObserver(listener: Observer): void
     unregisterObserver(listener: Observer): void
@@ -6,13 +11,27 @@ interface Subject {
 }
 
 interface Observer {
-    update(message: string): void
+    id: number
+    name: string
+    update(subject: Subject): void
+}
+
+interface Message {
+    id: number
+    publisher: string
+    content: string
 }
 
 class RadioStation implements Subject {
     public name: string
     private message: string = ''
     private listeners: Array<Observer>
+
+    
+    getMessage() : string {
+        return this.message
+    }
+    
 
     constructor(name: string) {
         this.name = name
@@ -23,11 +42,12 @@ class RadioStation implements Subject {
         this.listeners.push(listener)
     }
     unregisterObserver(listener: Observer): void {
-        this.listeners = this.listeners.filter(l => l !== listener)
+        this.listeners = this.listeners.filter(l => l.id !== listener.id)
+        console.log(`===== unregistered "${listener.name}" from ##${this.name}##`)
     }
 
     notifyObservers(): void {
-        this.listeners.forEach(listener => listener.update(this.message))
+        this.listeners.forEach(listener => listener.update(this))
     }
     broadcastMessage(message: string): void {
         this.message = message
@@ -38,20 +58,52 @@ class RadioStation implements Subject {
 
 class Listener implements Observer {
 
-    private name: string
-    private messages: Array<string>
+    public id: number
+    public name: string
+    private messages: Array<Message>
 
     constructor(name: string) {
+        this.id = Date.now()
         this.name = name
         this.messages = []
     }
 
-    update(message: string): void {
-        this.messages.push(message)
-        console.log(`${this.name} got the message ${message}`)
+    update(subject: Subject): void {
+        if (subject instanceof RadioStation) {
+            this.messages.push({
+                id: Date.now(),
+                publisher: subject.name,
+                content: subject.getMessage()
+            })
+            console.log(`${this.name} got the message "${subject.getMessage()}" from ##${subject.name}##`)
+        }
     }
 
     showMessages(): void {
         this.messages.forEach(m => console.log(m))
     }
 }
+
+// usage
+// #### observers
+const observer1 = new Listener("alex");
+const observer2 = new Listener("alice");
+const observer3 = new Listener("jona");
+// #### subjects
+const radioStation1 = new RadioStation("new mexico national station");
+radioStation1.registerObserver(observer1);
+radioStation1.registerObserver(observer2);
+radioStation1.registerObserver(observer3);
+
+const radioStation2 = new RadioStation("nevada national station");
+radioStation2.registerObserver(observer1);
+radioStation2.registerObserver(observer3);
+
+const radioStation3 = new RadioStation("colorado national station");
+radioStation3.registerObserver(observer2);
+
+radioStation1.broadcastMessage("it will rain tomorrow");
+radioStation2.broadcastMessage("a new song is out");
+radioStation3.broadcastMessage("enjoy your weekend");
+radioStation1.unregisterObserver(observer1)
+radioStation3.unregisterObserver(observer2)
