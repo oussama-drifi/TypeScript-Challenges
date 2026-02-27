@@ -1,3 +1,7 @@
+// ##################### Singleton Pattern #####################
+// the sigleton pattern is useful when you need a global state across your entire application
+// the pattern allows only one access point
+
 class Singleton {
     private static instance: Singleton
 
