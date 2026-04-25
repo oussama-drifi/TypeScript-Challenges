@@ -1,6 +1,9 @@
 interface PaymentProcessor {
     charge(amount: number): void
 }
+type TypeMethod = 'paypal' | 'credit card'
+
+
 
 class PaypalPayment implements PaymentProcessor {
     charge(amount: number): void {
@@ -13,10 +16,9 @@ class CreditCardPayment implements PaymentProcessor {
     }
 }
 
-type TypeMethod = 'paypal' | 'credit card'
 
 class PaymentFactory {
-    static create_payment_method(method: TypeMethod) {
+    static createPaymentMethod(method: TypeMethod) {
         switch (method) {
             case 'paypal':
                 return new PaypalPayment()
@@ -29,5 +31,5 @@ class PaymentFactory {
 }
 
 // usage
-const processor = PaymentFactory.create_payment_method('paypal')
+const processor = PaymentFactory.createPaymentMethod('paypal')
 processor.charge(100)
