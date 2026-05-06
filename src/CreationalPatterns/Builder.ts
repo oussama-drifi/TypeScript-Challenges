@@ -3,11 +3,11 @@
 // it allows you to create differente types and representations of an objectr using the same construction process 
 
 
-interface buildCarActions {
-    setBrand(brand: string): CarBuilder
-    setModel(model: string): CarBuilder
-    setColor(color: string): CarBuilder
-    setNbrDoors(nbrDoors: number): CarBuilder
+interface BuildCarActions {
+    setBrand(brand: string): this
+    setModel(model: string): this
+    setColor(color: string): this
+    setNumberOfDoors(numberOfDoors: number): this
 }
 
 
@@ -16,54 +16,81 @@ class Car {
                 private brand: string, 
                 private model: string, 
                 private color: string,
-                private nbrDoors: number
-        ) {
-        this.brand = brand;
-        this.model = model;
-        this.color = color;
-        this.nbrDoors = nbrDoors;
-    }
+                private numberOfDoors: number
+        ) {}
 }
 
 
-class CarBuilder implements buildCarActions {
+class CarBuilder implements BuildCarActions {
     private brand: string = ''
     private model: string = ''
     private color: string = ''
-    private nbrDoors: number = 0
+    private numberOfDoors: number = 0
 
     constructor () {}
 
+
     // building methods
-    setBrand(brand: string): CarBuilder {
+    setBrand(brand: string): this {
         this.brand = brand
         return this
     }
-    setModel(model: string): CarBuilder {
+    setModel(model: string): this {
         this.model = model
         return this
     }
-    setColor(color: string): CarBuilder {
+    setColor(color: string): this {
         this.color = color
         return this
     }
-    setNbrDoors(nbrDoors: number): CarBuilder {
-        this.nbrDoors = nbrDoors
+    setNumberOfDoors(numberOfDoors: number): this {
+        this.numberOfDoors = numberOfDoors
         return this
+    }
+
+    private reset(): void {
+        this.brand = ''
+        this.model = ''
+        this.color = ''
+        this.numberOfDoors = 0
     }
 
     // to be called at the end
     build(): Car {
-        return new Car(this.brand, this.model, this.color, this.nbrDoors)
+        if (!this.brand.trim()) {
+            throw new Error('Brand is required.')
+        }
+        if (!this.model.trim()) {
+            throw new Error('Model is required.')
+        }
+        if (!this.color.trim()) {
+            throw new Error('Color is required.')
+        }
+        if (!Number.isInteger(this.numberOfDoors) || this.numberOfDoors <= 0) {
+            throw new Error('Number of doors must be a positive integer.')
+        }
+
+        const car = new Car(this.brand, this.model, this.color, this.numberOfDoors)
+        this.reset()
+        return car
     }
 
 }
 
 // usage
-const myCar: Car = new CarBuilder()
-                    .setBrand('audi')
-                    .setModel("Q8")
-                    .setColor('black')
-                    .setNbrDoors(4)
-                    .build()
-                    
+const builder: CarBuilder = new CarBuilder()
+// use the same builder
+const mySUVCar = builder
+                .setBrand("audi")
+                .setModel("Q8")
+                .setColor("black")
+                .setNumberOfDoors(4)
+                .build()
+
+const myCar = builder
+                .setBrand("bmw")
+                .setModel("i7")
+                .setColor("white")
+                .setNumberOfDoors(4)
+                .build()
+
